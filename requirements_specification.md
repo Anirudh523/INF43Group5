@@ -1,10 +1,13 @@
 Title: FindMe Friends  
+
 Keya Negandhi (KNEGANDH), Makani Melendrez (MAKANIM), Anirudh Ravishankar(aravish4), Jungmin Han(jungmih1), Daniel Tan (dmtan2)  
+
 Executive Summary:  
 Our team is creating an app called FindMe Friends. This app is a spin off from Find My iPhone. Instead of sharing location with family and friends, you share your location based upon your interests. You subscribe to an interest (ex. skiing) to see locations of people. There will also be an activities tab, where you can find activities going on near you. Some key features that we have are a chat option, personal bio, Id-based registration for safety, and group size/capacity if you subscribe to an activity going on. Our target audience is everyone, because everyone can bond over interests. We will assume that we will have access to a third party map app in order for our app to operate. The goal of our app is to be safe, user friendly, and a way to branch out. 
 
 Application Context / Environmental Constraints:  
 The app will run in Orange County, CA (can be scalable in the future). The app will run on Android and IOS. iPhone 8 and up, Android 10 and up. The app depends on a Wifi or cellular connection. The app interacts with actors such as humans, 3rd party location apps such as Google Maps.
+
 Functional Requirements: Describe the functional requirements of the system in precise detail.  When possible, identify the entities (components, sections, areas of functionality) that make up the system.  Characterize the properties, states, functions, and interrelationships of each entity. This list of requirements should be detailed enough that you can pass them to a set of skilled developers (or a coding agent, like Codex or Claude Code) and it could create a detailed implementation plan from them (if not actual code).
 Functional Requirements Analyses: For (at least) five of the suggested optional features and (at least) two of your own ideas), provide a detailed analysis of the pros & cons of that feature for users, including any potential ethical concerns.
 
