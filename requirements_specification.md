@@ -253,4 +253,4 @@ The user exits the app
 
 
 I created this using a Canva template. I modified this template to display our app, but I still give credit to the creator of this template, Canva Creative Studio. This is a rough idea of how our app will look, but as time goes on I will modify this to add more specific features.  
-![UI Mockup](https://imgur.com/a/ZIVIkEz)
+![UI Mockup](https://i.imgur.com/LXtq3gD.png)
