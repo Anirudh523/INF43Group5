@@ -144,12 +144,18 @@ Process of using each command:
 
 With a few different packages and .js files that include these functions, I have managed to create a local simulation of our server-client communication on my environment.
 
+
 ![prototype image 2](../images/hw2-prototype-img2.png)
+
+
 ![prototype image 3](../images/hw2-prototype-img3.png)
+
 
 Another challenge from this prototype was that upon registration of the first user, the server-side comparison didn’t actually differentiate the client from other user users. As a result, as seen above, a single registration resulted in a loop falsely reporting that there was a nearby user. I fixed this issue by assuming every userId was unique, and adding a simple comparison with these ids.
 
+
 ![prototype image 4](../images/hw2-prototype-img4.png)
+
 
 This is a screenshot of one of the client terminals after making these changes. When user-a is inputted into this terminal, and user-a is the only user on our database, the loop fetches noone and reports nearby as 0. After opening another terminal and creating a user-b, the loop responds to this change by fetching the other user.
 
