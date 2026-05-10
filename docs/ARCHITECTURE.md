@@ -133,6 +133,7 @@ Process of using each command:
 - The prototype uses Node.json files in order to simulate a server and its clients on different terminals.
 - Here are some of the most basic functions that were written in this prototype:
 ![prototype image 1](../images/hw2-prototype-img1.png)
+
 1. register() simply sends the userId, displayName, and email to the server, and the server takes these information to create an entry in the “users” map. 
 
 2. The current implementation of sendLocation() uses random functions to change the user’s location by a small bit to simulate movement, then sends the location variables lat and lon paired with userId to the server. The server then finds that user within its map and overwrites the user’s location. 
@@ -142,11 +143,14 @@ Process of using each command:
 4. A challenge that arises with this design is that each fetchNearby loop will complete a sequential search with the entire user database, which has a O-notation of O(N) and is suboptimal for a realistic, scalable implementation of a mobile app with potentially thousands of users. However, this is a simplified prototype stub that is mostly designed for us to learn the process of building an app. It still does its job, and will have to suffice for our current expectations.
 
 With a few different packages and .js files that include these functions, I have managed to create a local simulation of our server-client communication on my environment.
+
 ![prototype image 2](../images/hw2-prototype-img2.png)
 ![prototype image 3](../images/hw2-prototype-img3.png)
+
 Another challenge from this prototype was that upon registration of the first user, the server-side comparison didn’t actually differentiate the client from other user users. As a result, as seen above, a single registration resulted in a loop falsely reporting that there was a nearby user. I fixed this issue by assuming every userId was unique, and adding a simple comparison with these ids.
 
 ![prototype image 4](../images/hw2-prototype-img4.png)
+
 This is a screenshot of one of the client terminals after making these changes. When user-a is inputted into this terminal, and user-a is the only user on our database, the loop fetches noone and reports nearby as 0. After opening another terminal and creating a user-b, the loop responds to this change by fetching the other user.
 
 This is a very basic implementation for the prototype and is missing most of the functionalities that are specified in our requirements specification. However, we were able to familiarize ourselves with the server-client communication mechanisms and the language that we will be using. The issues and design decisions that arose throughout this prototype will be beneficial in how we proceed with our app development.
