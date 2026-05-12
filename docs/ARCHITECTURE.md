@@ -1,6 +1,6 @@
 # HW2: Architecture
 
-### Group: Keya Negandhi (KNEGANDH), Makani Melendrez (MAKANIM), Anirudh Ravishankar (aravish4), Jungmin Han (jungmih1), Daniel Tan (dmtan2)
+## Group: Keya Negandhi (KNEGANDH), Makani Melendrez (MAKANIM), Anirudh Ravishankar (ARAVISH4), Jungmin Han (JUNGMIH1), Daniel Tan (DMTAN2)
 
 
 ## Architectural Summary:
@@ -359,9 +359,6 @@ With a few different packages and .js files that include these functions, I have
 
 
 ![prototype image 2](../images/hw2-prototype-img2.png)
-
-
-
 
 
 ![prototype image 3](../images/hw2-prototype-img3.png)
