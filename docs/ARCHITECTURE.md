@@ -125,6 +125,205 @@ Process of using each command:
 
 
 ## Examples of Component Functions and Connector Communications
+### Age Range
+#### Basic flow:
+1. User opens the settings app: backend prompts user_open_settings() -> frontend displays current settings
+2. App displays current range values: Frontend.display_range_data()->Backend sends an HTTPS GET /api/settings/range to server and gets back { currentRange: number }
+3. User toggles with range data bar or types in data: Settings Frontend.change_range_values() -> { new_Range: number } is saved by the Backend and set to the server through an HTTP PUT request
+4. Database updated with new values:Backend.update_values()->SQL Database updates range values with a UPDATE command.
+5. SQL Database confirms with the server: Database returns the row to the server -> Backend responds with an HTTP Ok 200 confirmation statement.
+6. Map refreshes to the changes: Frontend.filter_users_from_range() -> Backend sends an HTTP request to the google maps API to get information(User_id, range: number) about which users are in the area.
+
+#### Alternative flow:
+(Repeat of the first two steps in the Basic flow)
+1. Users toggles the bar or increments out of range: Frontend attempts the change_range_values() -> Backend correctly points out the issues using validateRange() returning the reason:(‘increment constraint’)
+2. App attempts to resolve the issue by capping the value: Frontend displays the highest possible value with display_highest_range() function-> {range: number} saved locally by the app
+3. App saves the range: Backend calls the saveRange() function to save the value and sends out a statement to the server -> An HTTP PUT request is sent to the server with information on {user_id, range} with range being the max or min range.
+4. Database accepts and stores the value: The server stores the value on the SQL database -> UPDATE [database_name] SET range_km command sent
+5. Backend confirms and more steps occur like stated in the control flow.
+
+#### Exception Flow:
+1. User opens the settings section on the application: Frontend uses the display_info() to show the user options on what they can use-> user credentials already established.
+2. User inserts themselves into the search tool and searches for a non-existent entity range: Frontend displays common searches and adjusts the toolbar display with tool_format() function -> Backend stores the text that is written by the user with the store_search_bar_text()
+3. App searches for information about the tool: Backend sends out a request to the server about information about that certain tool written -> HTTP GET /api/settings/info/range
+4. Server tries to get information about the tool from the database: Server searches for information on functionality -> SELECT range FROM info
+5. Database gives faulty information: Database returns an empty list -> []
+6. Server informs backend of lack of information : HTTP ERROR -> []-backend returns a blank statement
+7. Users see on the app that information on the topic cannot be found: Frontend calls showEmptyState() function -> Displays message “No information on requested service could be found.”
+
+
+### Real Names
+#### Basic Flow:
+1. User starts the registration process: registration_window() called on frontend: state set to name entry
+2. App gains the information about the people’s names: Frontend calls gathernameinfo() -> {first_name, last_name} is stored locally at first
+3. Submit button is pressed after unsuspicious name is passed: submit() is called from the frontend-> the {first_name, last_name} is stored globally and passed over to the backend
+4. App starts verification of identity: validate_name() is called by the backend sending out an HTTP request to the server -> HTTP POST /api/profile/name {user_id, display_name}
+5. Server searches the database: verify_name() is called -> SELECT {first_name, last_name} FROM users sent to the SQL database is called and return true as an empty list is found so {valid:true}
+6. Server saves the name to the database: save_name() is called -> UPDATE users SET name = {name} WHERE id = ? sent to database
+7. Server confirms addition of the name: Server confirms that it was able to add the name -> HTTP 200 CREATED
+8. Backend returns that the name was valid: validate_name returns truthy information -> {suspicious: False, valid: True}
+9. App advances to the next step: Frontend calls advance_step() -> state no longer is in the name section
+
+#### Alternative Flow:
+1. User submits a suspicious name: Frontend calls submit() ->  the {first_name, last_name} is stored globally and passed over to the backend; {first_name = “stupid”, last_name = “app”}
+2. Backend detects that the name is suspicious: validate_name() is called -> {suspicious: true, valid: False}
+3. App displays information about why they caught an error: Frontend calls displaysusnamevalue() -> {message: Name seems suspicious, attempts_left:4}
+4. User re-submits a valid name: Frontend calls submit() again ->  a valid {first_name, last_name} is stored globally and passed over to the backend
+5. Name is verified : validate_name is called (steps 4-8 in basic flow are repeated) -> {suspicious: False, valid: True}
+6. App advances to the next step: Frontend calls advance_step() -> state no longer is in the name section
+
+#### Exception Flow: 
+1. User submits a suspicious name: Frontend calls submit() ->  the {first_name, last_name} is stored globally and passed over to the backend; {first_name = “stupid”, last_name = “app”}
+2. Backend detects that the name is suspicious: validate_name() is called -> {suspicious: true, valid: False}
+3. App displays information about why they caught an error: Frontend calls displaysusnamevalue() -> {message: Name seems suspicious, attempts_left:0}
+4. Registration becomes locked for the user: Frontend calls the lockRegistrationField() -> state = {locked, flag_account = True, message = “Too many suspicious tries.”} passed to backend as well
+5. Information about the lockage is displayed: displayLockageReason() is called by the frontend - > {message: “You took too many tries.”}
+6. Backed flags the account: flagAccount(user) is called by the backend sending out a request to the server -> HTTP POST /api/flag called {user_id, reason} passed
+7. Database marks the account -> punish_account() is called by the server prompting the SQL database to save the account info-> INSERT INTO flag {user_id, reason} 
+
+
+### Private & Public Settings
+#### Basic Flow:
+1. User opens settings: Frontend calls display_settings() -> state = {in_setting}
+1. User selects on the privacy option: Frontend calls the display_privacy() option -> updates state = {in_setting, privacy}
+1. Backend loads the information about the current privacy state:  load_privacy_state() calls the server -> HTTPS GET /api/settings/privacy sent to the server 
+1. Server sends response about the setting -> {visibility: public} 
+1. User changes the visibility: Frontend calls the toggle_visibility_bar() -> Bar toggles to private and visibility is set to private locally
+1. Backend saves the visibility to the system: saveVisibilitySetting() is called by the backend -> HTTPS PUT api/settings/privacy {“visibility”: “private”} sent to server 
+1. Server responds with a successful change: successful_change() called -> HTTP 200 OK
+
+#### Alternative Flow:
+1. User opens settings: Frontend calls display_settings() -> state = {in_setting}
+1. User selects on the privacy option: Frontend calls the display_privacy() option -> updates state = {in_setting, privacy}
+1. Backend loads the information about the current privacy state:  load_privacy_state() calls the server -> HTTPS GET /api/settings/privacy sent to the server 
+1. Server sends response about the setting -> {visibility: public} 
+1. User changes the visibility multiple times quickly: Frontend calls the toggle_visibility_bar() multiple times in a small time frame-> Bar toggles to private and public and back and forth but isn’t able to keep up
+1. Backend attempts to save the visibility to the system: saveVisibilitySetting() is called by the backend -> HTTPS PUT api/settings/privacy {“visibility”: “private/public”} sent to server however multi-states are sent at once
+1. Server responds with an error: failed_change() called -> HTTP 500 ERROR
+1. App displays an error message: Frontend calls display_too_much_user_input() -> {reason: “Server error”, message: “Please don’t toggle the bar too much.”}
+1. User listens to request: Frontend calls the toggle_visibility_bar() once-> Bar toggles to private and visibility is set to private locally
+1. Backend saves the visibility to the system: saveVisibilitySetting() is called by the backend -> HTTPS PUT api/settings/privacy {“visibility”: “private”} sent to server 
+1. Server responds with a successful change: successful_change() called -> HTTP 200 OK
+
+#### Exception Flow:
+1. User opens settings: Frontend calls display_settings() -> state = {in_setting}
+1. User selects on the search: Frontend calls the search() option -> updates state = {in_setting, search}
+1. User searches for the privacy setting: Frontend calls the function get_info(“privacy”)
+1. Backend makes a request to the server to find the information needed: get_info_about_setting(“privacy”) -> HTTPS GET /api/settings/privacy sent to the server 
+1. Server cannot locate the setting: Server send back information_error() -> HTTP Error 404(Not Found)
+1. App displays error message: Frontend displays calls display_feature_not_found() -> {error: “feature not found”}
+
+
+### Chat Feature
+#### Basic Flow:
+1. User opens a chat tab: Frontend displays the chat tabs call display_chat(): {state: “chat”} -> passed to backend
+1. Backend calls the server: Backend calls connect_to_others() to connect to the server -> HTTP GET api/connections sent to the server
+1. Server responds listing users connected: Server calls load_users(): [User1, User2, User3]
+1. User selects which user that they want to chat to: Frontend calls selectUser()-> user: “{selected}” passed to backend
+1. App initiates the process to load messages through a server request: Backend calls loadMessages(“{selected}”) -> HTTP GET /api/messages/selected send to the server
+1. Server gains the conversation id from the database: get_converstation() called by server -> SELECT * FROM messages WHERE selected = ? Values=(Selected)
+1. App displays conversation and user types in message: show_messages() and typed_message() called by frontend -> {loaded = True, message_submitted = True}
+1. Application posts the message to the backend: postMessage(selected, message) -> HTTPS POST /api/messages {, selected, text} sent to server 
+1. Server writes the message into the database: SaveMessage() called in server -> SQL INSERT INTO messages(user, selected,text) sent to SQL database
+1. Message is pushed from local server to websocket for receiver to get it: WebSocket event {msgId, text, senderId, }pushed to recipient's connected client
+1. Recipient receives message on the other end: recieveMessage() called on their local app server: Message inserted into conversation database
+
+
+### Publicly Viewed Bios
+#### Basic Flow:
+1. User opens Profile: Frontend calls display_profile → display_profile is sent to Backend and Backend holds the data about which profile is to be displayed
+1. Backend calls the server: Backend calls load_profile() → HTTPS GET /api/profile/me → server returns {bio: “...”, user_id: “123”}
+1. User clicks Edit Bio: Frontend calls edit_bio() → Backend receives and updates state = {edit_move_active}
+1. Save Bio: Frontend calls save_bio() → Backend calls analyze_language() and checks {new_bio: “...”} for any inappropriate language → HTTPS Post /api/profile/update {new_bio: “..”} 
+1. Store in Server: server calls update_bio() → information is stored in server, HTTP 200 OK → Frontend is properly updated and displaying correctly
+
+#### Alternative Flow:
+1. User opens Profile: Frontend calls display_profile → display_profile is sent to Backend and Backend holds the data about which profile is to be displayed
+1. Backend calls the server: Backend calls load_profile() → HTTPS GET /api/profile/me → server returns {bio: “...”, user_id: “123”}
+1. User clicks Edit Bio: Frontend calls edit_bio() → Backend receives and updates state = {edit_move_active}
+1. User clicks Bio Prompts: Frontend calls display_prompts() → HTTPS GET api/templates/prompts
+1. User selects Prompt: Frontend calls load_prompt → Backend receives and state = {prompt_active}
+1. Save Bio: Frontend calls save_bio() → Backend calls analyze_language() and checks {new_bio: “...”} for any inappropriate language → HTTPS Post /api/profile/update {new_bio: “..”}
+1. Store in Server: server calls update_bio() → information is stored in server, HTTP 200 OK → Frontend is properly updated and displaying correctly
+
+#### Exceptional Flow:
+1. User opens Profile: Frontend calls display_profile() → display_profile() is sent to Backend and Backend holds the data about which profile is to be displayed
+1. Backend calls the server: Backend calls load_profile() → HTTPS GET /api/profile/me → server returns {bio: “...”, user_id: “123”}
+1. User clicks Edit Bio: Frontend calls edit_bio() → Backend receives and updates state = {edit_move_active}
+1. Save Bio: Frontend calls save_bio() → Backend calls analyze_language() and checks {new_bio: “...”} for any inappropriate language → HTTPS Post /api/profile/update {new_bio: “..”}
+1. Language Detected: Backend returns HTTP 400 Bad Request {error: “prohibited language”}
+1. Error: Frontend calls display_error(“Prohibited language”) → an error is displayed telling the user what they need to fix
+
+
+### Filter (gender, age, etc..)
+#### Basic Flow:
+1. User opens Filter: Frontend calls display_filters() → state = {filter_active}
+1. User adjusts Filters: Frontend calls update_filters(age: “20-25, gender: “female”)
+1. User applies Filters: Frontend calls display_filtered() → HTTPS GET /api/search?age_min=20&age_max=25&gender=female
+1. Update Display: server returns all applicable users → Backend calls update_search(info) → Frontend displays all matching users
+
+#### Alternative Flow:
+1. User opens Filter: Frontend calls display_filters() → state = {filter_active}
+1. User clears Filters: Frontend calls reset_filter() → state={empty_filters}
+1. User refreshes display: Frontend calls display_filtered() → HTTPS GET /api/search
+
+#### Exceptional Flow
+1. User opens Filter: Frontend calls display_filters() → state = {filter_active}
+1. User adjusts Filters: Frontend calls update_filters(age: “20-25, gender: “female”)
+1. User applies Filters: Frontend calls display_filtered() → HTTPS GET /api/search?age_min=30&age_max=30&gender=female&dist=1
+1. Update Display: Server returns all applicable users → Backend calls update_search(info) → info is found to be None
+1. Show Users: Backend calls display_empty() → Frontend displays Text telling the user that there is no user matching criteria as well as a button to widen search criteria
+1. Broaden Search: Frontend calls expand_search() → HTTPS GET /api/search?age_min=25&age_max=35&gender=female&dist=5
+1. Display Expanded: Backend calls update_search(info) → Display is updated and contains users
+
+
+### ID-based registration
+#### Basic Flow:
+1. User registration: Backend calls request_id() → state = {need_id}
+1. Reminder displayed: Backend calls display_reminder() → state = {id_reminder}
+1. User enters ID: Frontend calls upload_image() → HTTPS POST /api/verify/documentation {“image”: id-data}
+1. Verification: Backend calls validate_document() → state = {validating_image}
+1. Access: Server returns HTTP 201 Created {“verification”: True} → state = {registration_done}
+
+#### Alternative Flow:
+1. User registration: Backend calls request_id() → state = {need_id}
+1. Reminder displayed: Backend calls display_reminder() → state = {id_reminder}
+1. User enters ID: Frontend calls upload_image() → HTTPS POST /api/verify/documentation {“image”: id-data}
+1. Verification: Backend calls validate_document() → state = {validating_image}
+1. Issue: Server sends HTTP 422 Unprocessable Content {code: “image blurry”} → Backend calls request_upload() → The user is told that their image is faulty and requested to reupload their ID.
+1. Fix Image: Backend calls id_guide() → state = {fix_id} → frontend is updated to display a message guiding the user on how to properly photograph their ID
+1. Reupload: user enters ID → Frontend calls upload_image() → HTTPS POST /api/verify/documentation{“image”: id-data} → Backend calls validate_document() → state = {validating_image}
+1. Access: Server returns HTTP 201 Created {“verification”: True} → state = {registration_done}
+
+
+#### Exceptional Flow:
+1. User registration: Backend calls request_id() → state = {need_id}
+1. Reminder displayed: Backend calls display_reminder() → state = {id_reminder}
+1. User enters ID: Frontend calls upload_image() → HTTPS POST /api/verify/documentation {“image”: id-data}
+1. Verification: Backend calls validate_document() → state = {validating_image}
+1. Issue: Server sends HTTP 422 Unprocessable Content {code: “image blurry”} → Backend calls request_upload() → The user is told that their image is faulty and requested to reupload their ID
+1. Timeout: User repeats this process → Server calls timeout() → state = {timedout} → Backend calls timeout_screen() which lets the user know the necessity of ID and gives contact information to the user if they have concerns
+1. Flag Account: Backend calls flag_account(user) → user’s id is placed in a list to be scrutinized
+
+
+### Different tab for recurring group activities
+#### Basic Flow:
+1. User clicks Recurring activities: Frontend calls display_activities() → HTTPS GET /api/activities/recurring
+1. User selects activity: Frontend calls load_activity(activity_id)
+1. User joins activity: Frontend calls join_activity(activity_id) → HTTPS POST /api/groups/join {group_id: “..”}
+
+#### Alternative Flow
+1. User clicks Recurring activities: Frontend calls display_activities() → HTTPS GET /api/activities/recurring
+1. User selects multiple activities: Frontend calls load_activity(activity_id) for each activity the users clicks on
+1. User joins activity: Frontend calls join_activity(activity_id) → HTTPS POST /api/groups/join {group_id: “..”}
+
+#### Exceptional Flow
+1. User clicks Recurring activities: Frontend calls display_activities() → HTTPS GET /api/activities/recurring
+1. User selects activity: Frontend calls load_activity(activity_id)
+1. User joins activity: Frontend calls join_activity(activity_id) → HTTPS POST /api/groups/join {group_id: “..”}
+1. Group full: Server sends HTTP 403 Forbidden {code: “Group Full”}
+1. Display error: Backend calls display_error(error) → user is shown a popup detailing the error
+1. Return: Frontend calls display_activities() → display is reverted back to recurring activities
 
 
 ## Prototype Implementation
