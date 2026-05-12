@@ -227,6 +227,19 @@ Process of using each command:
 1. Server writes the message into the database: SaveMessage() called in server -> SQL INSERT INTO messages(user, selected,text) sent to SQL database
 1. Message is pushed from local server to websocket for receiver to get it: WebSocket event {msgId, text, senderId, }pushed to recipient's connected client
 1. Recipient receives message on the other end: recieveMessage() called on their local app server: Message inserted into conversation database
+#### Alternative Flow:
+1. User sends a message: Frontend calls onSendMessage() -> {text: [message_content]}
+1. Backend of the app pushes to message: pushMessage() -> HTTP Post /api/message sent to the server
+1. Connection is away so the reply is not immediate.: status() is called -> [“away”]
+1. App schedules a notification for a reply: Frontend calls scheduleNotification() -> HTTP POST /api/notifications/schedule
+1. Friend responds; Server receives message and sends via WebSocket: Websocket event {msg, text_content} 
+#### Exception Flow:
+1. App loads message: Frontend calls loadMessages(text).-> HTTP GET /api/messages/connection called
+1. App checks if any of the content that was sent was inappropriate: detect_disturbing_content() will be called by the server -> {flag:True}
+1. User is given an option to block and report on the  application: block_and_report() called by the frontend -> mode: {block:{true/false}
+1. If the user chooses to block the user the backend sends the request to the server: user_block(person) -> HTTPS POST /api/reports with { reporterId, offenderId, reason } 
+1. Serves updates that database to ensure that the person is blocked -> SQL INSERT INTO blocks(user_id, reason) 
+1. Server sends back confirmation that the user was successfully blocked -> HTTP 200 OK
 
 
 ### Publicly Viewed Bios
