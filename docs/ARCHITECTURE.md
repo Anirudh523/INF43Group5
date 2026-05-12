@@ -4,6 +4,7 @@
 
 
 ## Architectural Summary:
+The architecture for our app is a mobile application, built around client-server communication using React Native/Expo, a Node.js API server, an SQL database, and external services such as Google Maps and ID Verification service. The mobile app will run on Android devices, and handles user registration, ID uploads, user interface, profile updates, location changes, user-to-user messages, activity joining and privacy setting updates. The mobile app will communicate with our server with HTTP requests using JSON bodies. The Node.js server will act as the primary controller in handling the logic and updates on login, registration, activity joining, ID verification, profile change, filter processing, etc. Data such as user information, recurring activity lists, messages, blocks/privacy settings will be stored in our SQL database through CRUD operations. The Google Maps SDK/API will receive information about the users’ locations, which will be communicated through our server API before being relayed to another user, for encryption. The ID verification services will not permanently store any user ID information, but will return whether if the user could be verified for registration. Overall, our app design uses a layered architecture, where each of the interconnected component of the system has a different responsibility.
 
 
 ## Platforms
