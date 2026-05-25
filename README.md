@@ -15,3 +15,12 @@ Summary: We discussed the INF 43 project titled FindMe Friends and assignment tw
 Date: 5/6/2026   Type: In-person
 Attendees: Makani Melendrez, Keya Negandhi, Jungmin Han, Daniel Tan, Anirudh Ravishankar
 Summary: We discussed how our overall progress was in terms of understanding and completing the assignment. Across the board we understood more and more about what was asked of us to do, and we just needed a little bit more time to finish it. We did a bit of brainstorming on what platform we would use to do the prototype on and we were in between two options. The talk with the TA helped in assuring us that we were on the right track.
+
+Date: 5/13/2026   Type: In-person
+Attendees: Makani Melendrez, Keya Negandhi, Jungmin Han, Daniel Tan, Anirudh Ravishankar
+Summary: We discussed how we would approach the next couple of weeks of work as most of us had midterms and various other events or activities that conflicted with our schedules. We finally decided that the people with the most HCI and UI/UX design were the best suited to complete the UI prototyping assignment and the rest of the people focused on testing and building the prototype.
+
+Date: 5/20/2026   Type: In-person
+Attendees: Makani Melendrez, Keya Negandhi, Jungmin Han, Daniel Tan, Anirudh Ravishankar
+Summary: We discussed how our overall progress was in terms of  the UI prototype and the testing. We tried doing our mockups via canva but we encountered many issues in terms of how difficult it was to make just one screen. We finally decided on drawing the mockups so that it was easy to edit and iterate on.
+
