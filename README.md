@@ -24,3 +24,6 @@ Date: 5/20/2026   Type: In-person
 Attendees: Makani Melendrez, Keya Negandhi, Jungmin Han, Daniel Tan, Anirudh Ravishankar
 Summary: We discussed how our overall progress was in terms of  the UI prototype and the testing. We tried doing our mockups via canva but we encountered many issues in terms of how difficult it was to make just one screen. We finally decided on drawing the mockups so that it was easy to edit and iterate on.
 
+Date: 5/27/2026   Type: In-person
+Attendees: Makani Melendrez, Keya Negandhi, Jungmin Han, Daniel Tan, Anirudh Ravishankar
+Summary: We discussed how we would approach the testing phase of our project. We read the instructions clearly together so that everyone understood the assignment. Also we found out that we all had busy weeks for Week 10 so there would be no synchronous work done and we would all do the work in parts at separate times.
