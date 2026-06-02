@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FindMe Friends Coverage Summary</title>
+    <style>
+      body {
+        color: #172033;
+        font-family: Arial, sans-serif;
+        line-height: 1.45;
+        margin: 32px;
+      }
+      h1 {
+        color: #1b2a4a;
+      }
+      table {
+        border-collapse: collapse;
+        margin-top: 16px;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #d8dee9;
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: #eef3f8;
+      }
+      code {
+        background: #f3f5f7;
+        border-radius: 4px;
+        padding: 2px 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>FindMe Friends Coverage Summary</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Local timestamp</th>
+          <th>Coverage / Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Backend unit</td>
+          <td>2026-06-01 15:26:16</td>
+          <td>12 tests passing; all files line 85.25%, branch 47.14%, functions 61.54%</td>
+          <td>
+            <code>auth.js</code>: line 94.87%, branch 70.00%, functions 75.00%.
+            <code>store.js</code>: line 84.28%, branch 43.33%, functions 59.09%.
+          </td>
+        </tr>
+        <tr>
+          <td>Backend integration</td>
+          <td>2026-06-01 15:26:16</td>
+          <td>15 tests passing; custom V8 summary line 70.14%, functions 90.91%</td>
+          <td>
+            <code>app.js</code>: line 65.51%, functions 90.00%.
+            <code>auth.js</code>: line 66.67%, functions 100.00%.
+            <code>store.js</code>: line 79.73%, functions 91.30%.
+          </td>
+        </tr>
+        <tr>
+          <td>Backend combined</td>
+          <td>2026-06-01 15:26:16</td>
+          <td>27 tests passing; all files line 87.99%, branch 54.68%, functions 90.79%</td>
+          <td>
+            Generated with
+            <code>node --experimental-test-coverage --test "tests/*.test.js"</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>Frontend logic unit</td>
+          <td>2026-06-01 15:26:16</td>
+          <td>
+            8 tests passing; <code>prototypeLogic.mjs</code> line 89.74%,
+            branch 90.00%, functions 100.00%
+          </td>
+          <td>
+            Covers deterministic mobile UI logic. Full React Native component tests
+            remain future work.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
