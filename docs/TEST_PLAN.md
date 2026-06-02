@@ -294,7 +294,7 @@ The prototype is feature-complete for the current course/demo scope. The remaini
 
 The tests caught several bugs/issues that were easy to miss while simply clicking through our prototype. First, the old integration tests were stale: they assumed tokenless protected endpoints, even though the prototype was now updated to use bearer tokens. Rewriting them forced the test environment to log in like the real app and confirmed that location, profile, settings, activities, friend requests, and chat all reject unauthenticated access. 
 
-The latest tests also realize completion-level behavior. Registration now rejects missing/invalid demographic fields so that age/gender/sexuality filters have real data, and the Friends tab now depends on accepted friend requests rather than listing every user. The activity tests verify two important map/activity fixes: created activities must store firm coordinates, and sole-member leave should delete the activity. 
+The latest tests also helped realize completion-level behavior. Registration now rejects missing/invalid demographic fields so that age/gender/sexuality filters have real data, and the Friends tab now depends on accepted friend requests rather than listing every user. The activity tests verify two important map/activity fixes: created activities must store firm coordinates, and sole-member leave should delete the activity. 
 
 The hardest area to test was the frontend, because the current Expo project does not include Jest or React Native Testing Library. I added deterministic frontend logic tests instead, but that’s still not a full replacement for rendering screens, confirming visuals, and pressing buttons. 
 
