@@ -168,6 +168,18 @@ Approximate runtimes:
 
 Use two terminal windows. Start the API server first, then start the Expo app. Replace `YOUR_DIRECTORY`, `YOUR_IP_ADDRESS`, and `YOUR_GOOGLE_MAPS_API_KEY` with local values. On Windows PowerShell, use `npm.cmd`; on macOS/Linux, use `npm` and `export NAME="value"` for environment variables.
 
+NOTE: To get the full functionality of the prototype that was achieved, your Google cloud API key should have these features enabled:
+Geocoding API
+Maps JavaScript API
+Maps SDK for Android
+Maps SDK for iOS
+Maps Static API
+Places API
+
+If you are not able to acquire/use a free-trial version of the Google cloud API key, please contact:
+jungmih1@uci.edu
+for a temporary access to the API key that we used in testing. (our API key will not published on the Git repo)
+
 Terminal 1: API server
 
 ```powershell
