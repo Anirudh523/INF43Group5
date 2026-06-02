@@ -107,17 +107,16 @@ Integration test: a test that exercises multiple components together, such as HT
 
 ### 2.1 Required Minimums
 
-Last updated: 2026-06-01 15:26:16 (commit unavailable - workspace is not a Git repo)
+Last updated: 2026-06-01 15:26:16  
 
 | Category | Local timestamp | Required minimum | Current count |
 | --- | --- | ---: | ---: |
 | Unit tests | 2026-06-01 15:26:16 | 5 | 20 |
 | Integration tests | 2026-06-01 15:26:16 | 3 | 15 |
-| System tests | 2026-06-01 15:26:16 | Optional | 0 |
 
 ### 2.3 Tests by Category
 
-Last updated: 2026-06-01 15:26:16 (commit unavailable - workspace is not a Git repo)
+Last updated: 2026-06-01 15:26:16  
 
 | Category | Local timestamp | Count | Examples |
 | --- | --- | ---: | --- |
@@ -262,7 +261,7 @@ Open `http://localhost:8083` for web. For Expo Go, scan the QR code. If testing 
 
 ### 2.5 Coverage Achieved
 
-Last updated: 2026-06-01 15:26:16 (commit unavailable - workspace is not a Git repo)
+Last updated: 2026-06-01 15:26:16  
 
 | Test type | Local timestamp | Tool | Coverage |
 | --- | --- | --- | --- |
