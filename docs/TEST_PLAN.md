@@ -211,6 +211,55 @@ npm.cmd run web -- --port 8083
 
 Open `http://localhost:8083` in a browser.
 
+### 2.4.2 macOS/Linux command equivalents
+
+On macOS/Linux, use forward slashes in paths and `export` for environment variables instead of PowerShell's `$env:` syntax. The npm scripts are the same, but use `npm` instead of `npm.cmd`.
+
+Run tests:
+
+```bash
+cd YOUR_DIRECTORY/prototype/server
+npm install
+npm test
+npm run coverage:unit
+npm run coverage:integration
+node --experimental-test-coverage --test "tests/*.test.js"
+
+cd ../mobile
+npm install
+npm test
+npm run coverage
+npm run typecheck
+```
+
+Run the prototype:
+
+```bash
+# Terminal 1: API server
+cd YOUR_DIRECTORY/prototype/server
+npm install
+npm start
+```
+
+```bash
+# Terminal 2: Expo Go on a phone
+cd YOUR_DIRECTORY/prototype/mobile
+npm install
+export EXPO_PUBLIC_API_URL="http://YOUR_IP_ADDRESS:3000"
+export EXPO_PUBLIC_GOOGLE_MAPS_API_KEY="YOUR_GOOGLE_MAPS_API_KEY"
+npm start
+```
+
+```bash
+# Terminal 2: web browser
+cd YOUR_DIRECTORY/prototype/mobile
+npm install
+export EXPO_PUBLIC_GOOGLE_MAPS_API_KEY="YOUR_GOOGLE_MAPS_API_KEY"
+npm run web -- --port 8083
+```
+
+Open `http://localhost:8083` for web. For Expo Go, scan the QR code. If testing on a physical phone, `YOUR_IP_ADDRESS` must be the computer's LAN IP address, not `localhost`.
+
 ### 2.5 Coverage Achieved
 
 Last updated: 2026-06-01 15:26:16 (commit unavailable - workspace is not a Git repo)
