@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "FindMe Friends",
+    "slug": "findme-friends",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "findme",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#1B2A4A"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "edu.uci.findmefriends"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1B2A4A"
+      },
+      "package": "edu.uci.findmefriends"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "FindMe Friends uses your location to show people and activities near you in Orange County."
+        }
+      ],
+      "expo-asset",
+      "expo-font"
+    ]
+  }
+}
